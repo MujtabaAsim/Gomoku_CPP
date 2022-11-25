@@ -253,20 +253,24 @@ void computerMove(char board[][maxSize], int size, int& row, int& col, int winCo
 	}
 
 	//if opponent winning, stop him
-	for (int r = 0; r < size; r++) {
-		for (int c = 0; c < size; c++) {
-			if (board[r][c] == '-') {
-				board[r][c] = playerSymbol[0];
-				if (isWin(board, size, winCount, playerSymbol, 0)) {
-					row = r; col = c;
-					return;
-				}
-				else {
-					board[r][c] = '-';
+	for (int winC = winCount; winC > 0; winC--) {
+		for (int r = 0; r < size; r++) {
+			for (int c = 0; c < size; c++) {
+				if (board[r][c] == '-') {
+					board[r][c] = playerSymbol[0];
+					if (isWin(board, size, winC, playerSymbol, 0)) {
+						row = r; col = c;
+						return;
+					}
+					else {
+						board[r][c] = '-';
+					}
 				}
 			}
 		}
 	}
+
+	
 
 	// else randomly pick
 	do
@@ -299,7 +303,7 @@ void singlePlayer() {
 		}
 		else {
 			cout << "Computer's turn."; nl(1);
-			sleeper(100000);
+			sleeper(10000);
 			computerMove(board, size, row, col, winCount, pSym);
 		}
 		
@@ -345,7 +349,7 @@ int main()
 		case 2:
 			multiPlayer();
 			done = true;
-			break;
+			break; 
 		default:
 			cout << "invalid input, try again: ";
 			break;
